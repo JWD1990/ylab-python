@@ -19,7 +19,7 @@ def get_distance_between_points(
     ) ** 0.5
 
 
-def show_paths(points_coords: Points_coords) -> None:
+def show_path(points_coords: Points_coords) -> None:
     point_numbers: Point_numbers = {
         str(i): coord for i, coord in enumerate(points_coords)
     }
@@ -82,14 +82,13 @@ def show_paths(points_coords: Points_coords) -> None:
         if point[1]:
             path_str += f'[{point[1]}]'
 
-        if len_path != i:
-            path_str += ' -> '
-        else:
-            path_str += f' = {point[1]}'
+        path_str += ' -> ' if len_path != i else f' = {point[1]}'
+
     print(path_str)
 
 
 points_coords: Points_coords = [
-    (0, 2), (2, 5), (5, 2), (6, 6), (8, 3)
+    # (0, 2), (2, 5), (5, 2), (6, 6), (8, 3)
+    (0, 2), (2, 5), (5, 2), (6, 6), (5, 5), (8, 3)
 ]
-show_paths(points_coords)
+show_path(points_coords)
