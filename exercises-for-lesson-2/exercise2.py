@@ -219,7 +219,12 @@ while moves > 0:
 
     moves -= 1
     del_free_cell(selected_cell, free_cells)
-    system('CLS' if name == 'nt' else 'clear')
+
+    try:
+        system('CLS' if name == 'nt' else 'clear')
+    except:
+        pass  # не уверен в источнике
+    
     mark_cell(area, selected_cell, cur_mark)
     area_render(area, rows, cols)
 
