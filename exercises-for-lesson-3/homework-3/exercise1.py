@@ -4,15 +4,14 @@ def cache_decorator(func) -> callable:
     def wrapper(*args, **kwargs) -> any:
         param: any = args[0]
 
-        if param in cache:
-            return cache[args[0]]
+        if param not in cache:
+            cache[param] = func(*args, **kwargs)
 
-        return cache.setdefault(param, func(*args, **kwargs))
+        return cache[param]
 
     return wrapper
 
 
-if __name__ == '__main__':
-    @cache_decorator
-    def multiplier(number: int) -> int:
-        return number * 2
+@cache_decorator
+def multiplier(number: int) -> int:
+    return number * 2
