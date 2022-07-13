@@ -1,5 +1,5 @@
 from antagonistfinder import AntagonistFinder
-from attacks import Kick, UltimateAttackIncinerateWithLasers, FireAGun
+from attacks import FireAGun, Kick, UltimateAttackIncinerateWithLasers
 
 
 class SuperHero(FireAGun):

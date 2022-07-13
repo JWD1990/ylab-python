@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
-from places import Place
+
 from heroes import SuperHero
+from places import Place
 
 
 class MassMedia(ABC):

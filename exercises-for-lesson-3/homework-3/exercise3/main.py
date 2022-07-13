@@ -1,10 +1,9 @@
-from typing import Union
-from heroes import Superman, SuperHero
-from places import Kostroma, Tokyo
+from heroes import SuperHero, Superman
 from mass_media import MassMedia, Newspapers
+from places import Kostroma, Place, Tokyo
 
 
-def save_the_place(hero: SuperHero, place: Union[Kostroma, Tokyo], media: MassMedia):
+def save_the_place(hero: SuperHero, place: Place, media: MassMedia):
     hero.find(place)
     hero.attack()
     if hero.can_use_ultimate_attack:
