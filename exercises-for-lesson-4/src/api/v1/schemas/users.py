@@ -1,33 +1,32 @@
-from datetime import datetime
 import json
 
 from pydantic import BaseModel, validator
+from src.models import User
 
 __all__ = (
     "UserCreate",
-    "UserProfile"
+    "UserLogin",
+    "UserProfile",
 )
+
 
 class UserBase(BaseModel):
     email: str
+
+
+class UserBaseLogin(BaseModel):
     username: str
 
 
-class UserCreate(UserBase):
+class UserLogin(UserBaseLogin):
     password: str
 
 
-class UserProfile(UserBase):
-    roles: list[str] = []
-    created_at: datetime
-    is_superuser: bool
-    uuid: str
-    is_totp_enabled: bool
-    is_active: bool
+class UserCreate(UserLogin, UserBase):
+    ...
 
-    class Config:
-        exclude = {"id", "password"}
 
+class UserProfile(User):
     @validator('roles', pre=True)
     def json_decode(cls, v):
         if isinstance(v, str):

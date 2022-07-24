@@ -1,12 +1,30 @@
+from typing import Optional
 from pydantic import BaseModel
 
 from src.api.v1.schemas.users import UserProfile
 
 __all__ = (
     "SignupResponse",
+    "LoginResponse",
 )
 
 
-class SignupResponse(BaseModel):
+class SignupBaseResponse(BaseModel):
     msg: str = 'User created'
-    user: UserProfile
+
+
+class BadSignup(SignupBaseResponse):
+    error_code: Optional[int]
+
+
+class SuccessSignup(SignupBaseResponse):
+    user: Optional[UserProfile]
+
+
+class SignupResponse(BadSignup, SuccessSignup):
+    ...
+
+
+class LoginResponse(BaseModel):
+    access_token: str
+    refresh_token: str
