@@ -6,6 +6,7 @@ from src.api.v1.schemas.users import UserProfile
 __all__ = (
     "SignupResponse",
     "LoginResponse",
+    "RefreshResponse"
 )
 
 
@@ -28,3 +29,7 @@ class SignupResponse(BadSignup, SuccessSignup):
 class LoginResponse(BaseModel):
     access_token: str
     refresh_token: str
+
+
+class RefreshResponse(LoginResponse):
+    ...
