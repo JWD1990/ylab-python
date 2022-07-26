@@ -10,9 +10,16 @@ from src.api.v1.schemas import UserCreate, UserLogin
 from src.db import AbstractCache, get_cache, get_session
 from src.models import User
 from src.services import ServiceMixin
-from src.utils import get_hash_password, verify_password, create_tokens
-from src.translates import get_translate
-from src.utils import get_jwt_payload, TypeToken
+from src.utils import (
+    get_hash_password,
+    verify_password,
+    create_tokens,
+    get_jwt_payload,
+    check_user_data_intersection,
+    TypeToken
+)
+from src.status_codes import UserErrorsCodes
+from src.utils.error_status import get_error_response_data
 
 __all__ = (
     "AuthService",
@@ -54,20 +61,7 @@ class AuthService(ServiceMixin):
         ).first()
 
         if user:
-            number_error: int
-
-            # чтобы на клиенте можно было сделать красивый и с явным указанием на ошибку интерфейс
-            if user.email == user_data.email and user.username == user_data.username:
-                number_error = 0
-            elif user.email == user_data.email:
-                number_error = 1
-            elif user.username == user_data.username:
-                number_error = 2
-            
-            return {
-                "error_code": number_error,
-                "msg": get_translate("create_user_error", number_error)
-            }
+            return check_user_data_intersection(user, user_data)
 
         new_user = User(
             username=user_data.username,
@@ -81,11 +75,10 @@ class AuthService(ServiceMixin):
 
     def login_user(self, user_data: UserLogin) -> dict:
         """Выдать JWT-пару, если пройдена идентификация и аутентификация"""
-        user = self.session.query(User).filter(User.username == user_data.username).first()
+        user: User = self.session.query(User).filter(User.username == user_data.username).first()
 
-        if (not user or 
-            user and not verify_password(password=user_data.password, hash_pass=user.password)):
-            return None
+        if not user or user and not verify_password(user_data.password, user.password):
+            return get_error_response_data(UserErrorsCodes.USERNAME_EMAIL_PAIR_DOES_NOT_EXIST)
 
         return create_tokens(user)["tokens"]
     

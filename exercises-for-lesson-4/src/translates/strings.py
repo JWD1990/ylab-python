@@ -1,11 +1,11 @@
+from src.status_codes import UserErrorsCodes
+
 __all__ = (
     "get_translate",
 )
 
 
 def get_translate(space, key):
-    key = str(key)
-
     if space not in strings:
         return 'unknown space'
     
@@ -16,9 +16,14 @@ def get_translate(space, key):
 
 
 strings: dict[str, dict[str, str]] = {
-    "create_user_error": {
-        "0": "User is exist",
-        "1": "User with this email is already exist",
-        "2": "User with this username is already exist"
+    "user_error": {
+        UserErrorsCodes.USER_DOES_NOT_EXIST: "User does't exist",
+        UserErrorsCodes.USER_IS_EXITS: "User is exist",
+        UserErrorsCodes.EMAIL_INTERSECTION: "User with this email is already exist",
+        UserErrorsCodes.USERNAME_INTERSECTION: "User with this username is already exist",
+        UserErrorsCodes.USERNAME_EMAIL_PAIR_DOES_NOT_EXIST: "Username password pair does't exist"
+    },
+    "user_data": {
+        "success_update": "Update is successful. Please use new access_token."
     }
 }

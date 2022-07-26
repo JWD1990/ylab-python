@@ -5,7 +5,7 @@ from typing import Literal, Union
 import jwt
 from src.core import config
 from src.models import User
-from src.api.v1.schemas.users import UserProfile
+from src.api.v1.schemas import UserProfile
 from uuid import uuid4
 
 __all__ = (
@@ -32,7 +32,14 @@ def get_hash_password(password: str) -> str:
 
 
 def verify_password(password: str, hash_pass: str) -> bool:
-    return password_context.verify(password, hash_pass)
+    result: bool = False
+
+    try:
+        result = password_context.verify(password, hash_pass)
+    except:
+        ...
+    
+    return result
 
 
 def get_jwt_encode_config(type_token: TypeToken) -> JwtEncodeConfig:
@@ -80,17 +87,20 @@ def create_token(payload: dict, encode_config: dict = None) -> str:
     return jwt.encode(payload, encode_config["secret"], config.JWT_ALGORITHM)
 
 
-def create_tokens(db_user_data: User) -> dict:
+def create_tokens(db_user_data: User, refresh_token_uuid: str = None) -> dict:
     """Даст созданные токены и немного инфы из них"""
     user_data: UserProfile = UserProfile(**db_user_data.dict())
     tokens_types: list[TypeToken] = ["refresh", "access"]
     tokens_data: dict = {
-        "uuid_refresh_token": str(uuid4()),
+        "uuid_refresh_token": str(uuid4()) if not refresh_token_uuid else refresh_token_uuid,
         "uuid_access_token": str(uuid4()),
         "tokens": {}
     }
 
     for type in tokens_types:
+        if refresh_token_uuid and type == 'refresh':
+            continue
+
         encode_config: JwtEncodeConfig = get_jwt_encode_config(type)
         payload: dict = make_token_payload(
             type,
