@@ -8,7 +8,9 @@ from sqlmodel import Session
 from src.api.v1.schemas import PostCreate, PostModel
 from src.db import AbstractCache, get_cache, get_session
 from src.models import Post
+from src.models import User
 from src.services import ServiceMixin
+from src.utils import get_jwt_payload
 
 __all__ = ("PostService", "get_post_service")
 
@@ -29,8 +31,14 @@ class PostService(ServiceMixin):
             self.cache.set(key=f"{post.id}", value=post.json())
         return post.dict() if post else None
 
-    def create_post(self, post: PostCreate) -> dict:
+    def create_post(self, post: PostCreate, credentials: str) -> Optional[dict]:
         """Создать пост."""
+        payload: dict = get_jwt_payload(credentials, options={"verify_signature": False})
+        user: User = self.session.query(User).filter(User.uuid == payload["user_uuid"]).first()
+
+        if not user:
+            None
+
         new_post = Post(title=post.title, description=post.description)
         self.session.add(new_post)
         self.session.commit()
