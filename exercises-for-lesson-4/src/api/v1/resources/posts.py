@@ -2,9 +2,12 @@ from http import HTTPStatus
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials
 
 from src.api.v1.schemas import PostCreate, PostListResponse, PostModel
 from src.services import PostService, get_post_service
+from src.services import get_auth_service
+from src.status_codes import UserErrorsCodes
 
 router = APIRouter()
 
@@ -49,6 +52,14 @@ def post_detail(
 )
 def post_create(
     post: PostCreate, post_service: PostService = Depends(get_post_service),
+    credentials: HTTPAuthorizationCredentials = Depends(get_auth_service().get_jwtbearer()),
 ) -> PostModel:
-    post: dict = post_service.create_post(post=post)
+    post: dict = post_service.create_post(post, credentials)
+
+    if not post:
+        # 401, если нет пользователя
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail=UserErrorsCodes.USER_DOES_NOT_EXIST)
+
     return PostModel(**post)
