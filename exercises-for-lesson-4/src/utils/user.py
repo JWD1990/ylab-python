@@ -9,7 +9,7 @@ __all__ = (
 )
 
 
-def check_user_data_intersection(db_user: User, user_data: UserProfileUpdateData) -> int:
+def check_user_data_intersection(db_user: User, user_data: UserProfileUpdateData) -> dict:
     """
         Вернёт расшифровку по коллизиям с другими пользователями,
         чтобы на клиенте можно было сделать красивый и с явным указанием на ошибку интерфейс

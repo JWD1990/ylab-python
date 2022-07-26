@@ -92,7 +92,6 @@ class SuccessUserProfileResponse(BaseUserProfileResponse):
     user: Optional[UserProfile]
 
 
-
 class BaseUserProfileUpdateResponse(BaseModel):
     msg: str = get_translate("user_data", "success_update")
 

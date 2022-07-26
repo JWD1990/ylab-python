@@ -1,7 +1,7 @@
 from time import time
 from passlib.context import CryptContext
 from datetime import datetime
-from typing import Literal, Union
+from typing import Literal, Union, Optional
 import jwt
 from src.core import config
 from src.models import User
@@ -26,6 +26,7 @@ JwtEncodeConfig = dict[
 
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 def get_hash_password(password: str) -> str:
     return password_context.hash(password)
@@ -116,7 +117,7 @@ def create_tokens(db_user_data: User, refresh_token_uuid: str = None) -> dict:
 def get_jwt_payload(token: str, type_token: TypeToken = "access", options: dict = {}) -> dict:
     """Вернёт payload, если всё ок"""
     encode_config: dict = get_jwt_encode_config(type_token)
-    payload: dict = None
+    payload: Optional[dict] = None
 
     try:
         payload: dict = jwt.decode(

@@ -17,7 +17,7 @@ router = APIRouter()
     tags=["user_profile"],
     status_code=HTTPStatus.OK,
     response_model_exclude_none=True,
-    response_model_exclude={"user" :{"id", "password", "is_totp_enabled", "is_active"}}
+    response_model_exclude={"user": {"id", "password", "is_totp_enabled", "is_active"}}
 )
 def get_userprofile(
     response: Response,

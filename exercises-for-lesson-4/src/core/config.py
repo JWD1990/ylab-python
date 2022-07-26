@@ -8,7 +8,7 @@ JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "foo")
 JWT_REFRESH_SECRET_KEY: str = os.getenv("JWT_REFRESH_SECRET_KEY", "bar")
 JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
 JWT_ACCESS_TOKEN_EXPIRE_IN_SECONDS = 60 * 15  # 15 минут (по данным из коллекции Postman)
-JWT_REFRESH_TOKEN_EXPIRE_IN_SECONDS = 3600 * 24 * 30 # 30 дней (по данным из коллекции Postman)
+JWT_REFRESH_TOKEN_EXPIRE_IN_SECONDS = 3600 * 24 * 30  # 30 дней (по данным из коллекции Postman)
 
 # Название проекта. Используется в Swagger-документации
 PROJECT_NAME: str = os.getenv("PROJECT_NAME", "ylab_hw_3")

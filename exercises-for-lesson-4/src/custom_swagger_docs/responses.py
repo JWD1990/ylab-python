@@ -2,7 +2,7 @@ from src.api.v1.schemas import BadResponseBase
 from src.status_codes import UserErrorsCodes
 from src.utils import get_error_response_data
 
-__all__=(
+__all__ = (
     "intersection_responses",
     "user_not_found_response",
     "bad_update_userprofile_response",
@@ -52,7 +52,9 @@ user_not_found_response: dict = {
 
 bad_update_userprofile_response: dict = {**intersection_responses, **user_not_found_response}
 
-bad_authorisation_response_data: BadResponseBase = get_error_response_data(UserErrorsCodes.USERNAME_EMAIL_PAIR_DOES_NOT_EXIST)
+bad_authorisation_response_data: BadResponseBase = get_error_response_data(
+    UserErrorsCodes.USERNAME_EMAIL_PAIR_DOES_NOT_EXIST
+)
 bad_authorisation_data_response: dict = {
     400: {
         "description": bad_authorisation_response_data["msg"],

@@ -37,7 +37,7 @@ class PostService(ServiceMixin):
         user: User = self.session.query(User).filter(User.uuid == payload["user_uuid"]).first()
 
         if not user:
-            None
+            return None
 
         new_post = Post(title=post.title, description=post.description)
         self.session.add(new_post)
