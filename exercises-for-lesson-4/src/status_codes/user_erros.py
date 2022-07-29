@@ -1,0 +1,6 @@
+class UserErrorsCodes:
+    USER_DOES_NOT_EXIST: int = 0
+    USER_IS_EXITS: int = 1
+    EMAIL_INTERSECTION: int = 2
+    USERNAME_INTERSECTION: int = 3
+    USERNAME_EMAIL_PAIR_DOES_NOT_EXIST: int = 4
